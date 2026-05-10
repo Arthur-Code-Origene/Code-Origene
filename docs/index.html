@@ -927,6 +927,7 @@ for (var i = 0; i < anchors.length; i++) {
 </script>
 
    /* ------Fonction rajoutée ----*/ 
+   
    function envoyerContact(e) {
   e.preventDefault();
   var objet = document.getElementById('objet').value;
@@ -937,7 +938,11 @@ for (var i = 0; i < anchors.length; i++) {
 
   var dest = 'contact@gpda.fm';
   if (objet === 'loge' || objet === 'rencontre') {
-    dest = 'sec0837@gl-amf.org';
+   /*    ------DEBUT TEST ------          */
+   /*    dest = 'sec0837@gl-amf.org';     */
+
+       dest = 'maurel06@hotmail.com';     
+    /*    ------FIN TEST ------     */
   }
 
   var sujet = encodeURIComponent('[Code Origène] ' + objet + ' — ' + prenom + ' ' + nom);

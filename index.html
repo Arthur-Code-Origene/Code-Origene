@@ -962,6 +962,10 @@ function envoyerContact(e) {
   );
 
   window.location.href = 'mailto:' + dest + '?subject=' + sujet + '&body=' + corps;
+   
+   setTimeout(function () {
+  alert("Si votre application mail ne s'ouvre pas, écrivez à : " + dest);
+}, 1200);
 
   /* Confirmation visuelle */
   var btn = e.target.querySelector('.btn-submit');

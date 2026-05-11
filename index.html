@@ -868,10 +868,13 @@ footer {
 </footer>
 
 <script>
-/* Étoiles — JS pur sans var() CSS */
+/* ── ÉTOILES ─────────────────────────────────────── */
 (function() {
   var c = document.getElementById('stars');
   if (!c) return;
+  var style = document.createElement('style');
+  style.textContent = '@-webkit-keyframes twinkle{0%,100%{opacity:.25;-webkit-transform:scale(1);}50%{opacity:.9;-webkit-transform:scale(2);}}@keyframes twinkle{0%,100%{opacity:.25;transform:scale(1);}50%{opacity:.9;transform:scale(2);}}';
+  document.head.appendChild(style);
   for (var i = 0; i < 90; i++) {
     var s = document.createElement('div');
     s.style.position = 'absolute';
@@ -890,7 +893,7 @@ footer {
   }
 })();
 
-/* Reveal — avec fallback iOS */
+/* ── REVEAL ──────────────────────────────────────── */
 (function() {
   var els = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
@@ -904,38 +907,41 @@ footer {
     }, { threshold: 0.08 });
     for (var i = 0; i < els.length; i++) { obs.observe(els[i]); }
   } else {
-    /* Fallback anciens iPhone : tout visible immédiatement */
     for (var i = 0; i < els.length; i++) { els[i].classList.add('visible'); }
   }
 })();
 
-/* Nav opacité au scroll */
+/* ── NAV SCROLL ──────────────────────────────────── */
 window.addEventListener('scroll', function() {
   var n = document.getElementById('nav');
-  if (n) n.style.backgroundColor = window.scrollY > 50 ? 'rgba(7,14,26,0.99)' : 'rgba(8,15,26,0.97)';
+  if (n) n.style.backgroundColor = window.scrollY > 50
+    ? 'rgba(7,14,26,0.99)'
+    : 'rgba(8,15,26,0.97)';
 });
 
-/* Smooth scroll avec fallback */
-var anchors = document.querySelectorAll('a[href^="#"]');
-for (var i = 0; i < anchors.length; i++) {
-  anchors[i].addEventListener('click', function(e) {
-    var id = this.getAttribute('href');
-    var t = document.querySelector(id);
-    if (!t) return;
-    e.preventDefault();
-    try { t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-    catch(err) { t.scrollIntoView(); }
-  });
-}
-</script>
+/* ── SMOOTH SCROLL ───────────────────────────────── */
+(function() {
+  var anchors = document.querySelectorAll('a[href^="#"]');
+  for (var i = 0; i < anchors.length; i++) {
+    anchors[i].addEventListener('click', function(e) {
+      var id = this.getAttribute('href');
+      var t = document.querySelector(id);
+      if (!t) return;
+      e.preventDefault();
+      try { t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      catch(err) { t.scrollIntoView(); }
+    });
+  }
+})();
 
-<script>
+/* ── FORMULAIRE CONTACT ──────────────────────────── */
 function envoyerContact(e) {
   e.preventDefault();
-  var objet = document.getElementById('objet').value;
-  var prenom = document.getElementById('prenom').value;
-  var nom = document.getElementById('nom').value;
-  var email = document.getElementById('email').value;
+
+  var objet   = document.getElementById('objet').value;
+  var prenom  = document.getElementById('prenom').value;
+  var nom     = document.getElementById('nom').value;
+  var email   = document.getElementById('email').value;
   var message = document.getElementById('message').value;
 
   /* Destinataire selon l'objet */
@@ -944,17 +950,18 @@ function envoyerContact(e) {
     dest = 'sec0837@gl-amf.org';
   }
 
-  var sujet = encodeURIComponent('[Code Origène] ' + (objet || 'Contact') + ' — ' + prenom + ' ' + nom);
+  var sujet = encodeURIComponent(
+    '[Code Origène] ' + (objet || 'Contact') + ' — ' + prenom + ' ' + nom
+  );
   var corps = encodeURIComponent(
     'Prénom : ' + prenom + '\n' +
     'Nom : ' + nom + '\n' +
-    'Email répondre à : ' + email + '\n' +
+    'Email : ' + email + '\n' +
     'Objet : ' + (objet || 'Non précisé') + '\n\n' +
     'Message :\n' + message
   );
 
-  var lien = 'mailto:' + dest + '?subject=' + sujet + '&body=' + corps;
-  window.location.href = lien;
+  window.location.href = 'mailto:' + dest + '?subject=' + sujet + '&body=' + corps;
 
   /* Confirmation visuelle */
   var btn = e.target.querySelector('.btn-submit');
